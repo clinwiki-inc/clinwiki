@@ -69,7 +69,7 @@ export const fetchFacilitiesPageHasura = (nctId: any) => {
 };
 
 export const fetchSampleStudy = (nctId: any, QUERY: any) => {
-    return callGraphql(ENDPOINT, QUERY, { nctId });
+    return callGraphql(NODE_ENDPOINT, QUERY, { nctId });
 };
 
 export const fetchSearchPageMM = (params: any, QUERY: any) => {
