@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import { FormControl, DropdownButton, MenuItem, Checkbox } from 'react-bootstrap';
 import styled from 'styled-components';
 import { useState } from 'react';
@@ -46,9 +46,9 @@ export default function PageForm(props: Props) {
   const default_hash = 'gELcp_Fb'
 
   const intToStringPageType = (pageType: number) => {
-    if (pageType === 0 || 'study') return 'search'
-    if (pageType === 1 || 'hasuraStudy') return 'study'
-    if (pageType === 2 || 'search') return 'hasuraStudy'
+    if (pageType === 0 || 'search') return 'search'
+    if (pageType === 1 || 'hasuraStudy') return 'hasuraStudy'
+    if (pageType === 2 || 'study') return 'hasuraStudy'
     else return "study"
   }
 
@@ -86,12 +86,6 @@ export default function PageForm(props: Props) {
   };
 
   const selectedMailMergeType =
-    pageType === 'hasuraStudy' ?
-      <HasuraMailMergeFormControl
-        template={template}
-        onTemplateChanged={setTemplate}
-        islands={studyIslands}
-      /> :
 
       <MailMergeFormControl
         template={template}
@@ -118,6 +112,13 @@ export default function PageForm(props: Props) {
 
   };
 
+useEffect(()=>{
+  if (intToStringPageType(page.page_type) !== mode ){
+    console.log(mode, page)
+      updateMode(intToStringPageType(page.page_type))
+  }
+}, [])
+
   return (
     <div style={{ padding: '10px' }}>
       <label>Url</label>
@@ -129,23 +130,11 @@ export default function PageForm(props: Props) {
       />
       <label>Page Type</label>
       <div>
-        {/* 
-        <DropdownButton
-          bsStyle="default"
-          title={dropDownTitle(pageType)}
-          key="default"
-          style={{
-            marginBottom: '10px',
-            background: theme?.button,
-          }}>
-          <MenuItem onClick={() => updatePageType('Hasura Study')}>Hasura Study</MenuItem>
-          <MenuItem onClick={() => updatePageType('Study')}>Study</MenuItem>
-        </DropdownButton>
-        */}
         <DropdownButton
           bsStyle="default"
           title={`Type: ${capitalize(mode)}`}
           key={mode}
+          disabled
           style={{
             marginBottom: '10px',
             background: theme?.button,
